@@ -1,6 +1,7 @@
 import axios from "axios";
 import react from "react";
 import Movies from "./movies";
+import "./App.css";
 
 class App extends react.Component {
   state = {
@@ -22,26 +23,36 @@ class App extends react.Component {
   componentDidMount() {
     this.Getmovies();
   }
-
+  
   render() {
     const { isloading, movies } = this.state;
+    const loadingimg = "diamond.png";
+    
     return (
-      <div>
-        {isloading
-          ? "Loading..."
-          : movies.map((movies) => {
+      <section className="container">
+        {isloading ? (
+          <div className="loader">
+            <div className="lds-circle">
+                <img src={loadingimg} alt="Loading"/>
+            </div>
+          </div>
+        ) : (
+          <div className="movies">
+            {movies.map((movies, index) => {
               return (
                 <Movies
-                  key={movies.id}
-                  id={movies.id}
+                  key={index}
                   year={movies.year}
                   title={movies.title}
                   summary={movies.summary}
+                  genre={movies.genres}
                   poster={movies.medium_cover_image}
                 />
               );
             })}
-      </div>
+          </div>
+        )}
+      </section>
     );
   }
 }
